@@ -1,0 +1,4 @@
+CREATE TABLE MUSEUM (
+  ADDRESS VARCHAR(100),
+  ID int(11) NOT NULL auto_increment,
+  PRIMARY KEY (ID));

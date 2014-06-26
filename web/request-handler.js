@@ -1,7 +1,16 @@
 var path = require('path');
 var archive = require('../helpers/archive-helpers');
 var fs=require('fs');
-// require more modules/folders here!
+var mysql = require('mysql');
+
+var connection = mysql.createConnection(
+    {
+      host     : 'localhost',
+      user     : 'root',
+      password : 'qwerty',
+      database : 'museum',
+    }
+);
 
 
 
@@ -20,7 +29,7 @@ exports.handleRequest = function (req, res) {
     res.end();
   } else if (req.method==='POST') {
     //check to see if url is in file
-    //  if in file and archived, serve up archive
+    //  if in file archived, serve up archive
     //  else, send to waiting page and add to file
 
     var message;
@@ -40,6 +49,23 @@ exports.handleRequest = function (req, res) {
           //  if site not in list, add to list
           //redirect to loading.html
           archive.addUrlToList(message);
+
+          //mysql test
+          connection.connect();
+          var queryString = 'SELECT * FROM museum';
+          connection.query(queryString, function(err, rows,field){
+            if (err){
+              throw err;
+            }
+            console.log("Rows",rows);
+            // console.log("Field",field);
+            for (var i=0; i<rows.length; i++) {
+              console.log('Address: ', rows[i]['ADDRESS']);
+            }
+          });
+
+          connection.end();
+          //end mysql test
           res.writeHead(200, headers);
           var fileName=path.join(process.cwd(), '../web/public', 'loading.html');
           var fileStream = fs.createReadStream(fileName);

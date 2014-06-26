@@ -2,3 +2,12 @@ www.google.com
 www.yelp.com
 www.gmail.com
 www.apple.com
+www.mojo.com
+www.yahoo.com
+www.microsoft.com
+www.amazon.com
+www.devbootcamp.com
+www.disney.com
+www.dogs.com
+www.cats.com
+www.dogsandcats.com
