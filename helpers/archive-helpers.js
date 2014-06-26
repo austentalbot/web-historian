@@ -35,6 +35,7 @@ exports.readListOfUrls = function(callback){
       throw err;
     } else {
       var urls = data.toString().split('\n');
+
       callback(urls);
     }
   });
@@ -60,10 +61,9 @@ exports.isUrlArchived = function(url,callback){
   //create path name from url
   //check to see if path name exists in sites
     //use fs.exists to check to see if file is in folder
-
   var present=false;
+  console.log("In isURLArchived",url)
   var fileName=path.join(process.cwd(), '../archives/sites', url);
-  console.log("fileName is ",fileName);
   fs.exists(fileName, function(exists) {
     if (exists) {
       present=true;
