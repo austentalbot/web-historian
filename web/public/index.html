@@ -4,9 +4,33 @@
   <link rel="stylesheet" type="text/css" href="styles.css" />
 </head>
 <body>
+<script src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
   Enter a URL here:
   <form method="POST">
-    <input type="input" name="url"></input>
+    <input class='form' type="input" name="url"></input>
   </form>
+  <button id='btn'> Submit </button>
+  <script>
+  $(document).ready(function(){
+    $('#btn').on('click', function(){
+      var url = $('.form').val();
+      console.log("Sending AJAX request");
+      $.ajax({
+        url: 'http://127.0.0.1:8080',
+        type: 'POST',
+        data: JSON.stringify(url),
+        contentType: 'application/json',
+        success: function(data){
+          console.log("In sucess function", data);
+          $('body').html(data);
+        },
+        error: function(data){
+          console.error('ERROR');
+        }
+      });
+    });
+  });
+
+  </script>
 </body>
 </html>

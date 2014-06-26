@@ -1,5 +1,6 @@
 var fs = require('fs');
 var path = require('path');
+var request=require('request');
 var _ = require('underscore');
 
 /*
@@ -25,17 +26,55 @@ exports.initialize = function(pathsObj){
 // The following function names are provided to you to suggest how you might
 // modularize your code. Keep it clean!
 
-exports.readListOfUrls = function(){
+exports.readListOfUrls = function(callback){
+  //Read /archives/sites.txt using fs.readFile
+  //Use the callback to return an array of the urls
+  var fileName = path.join(process.cwd(), '../archives', 'sites.txt');
+  fs.readFile(fileName,function(err,data){
+    if(err){
+      throw err;
+    } else {
+      var urls = data.toString().split('\n');
+      callback(urls);
+    }
+  });
 };
 
-exports.isUrlInList = function(){
+// exports.isUrlInList = function(testUrl, callback){
+
+// };
+
+exports.addUrlToList = function(testUrl){
+  exports.readListOfUrls(function(urls){
+    if (urls.indexOf(testUrl)===-1) {
+      fs.appendFile(exports.paths.list, testUrl+'\n', function (err) {
+        if (err) {
+          throw error;
+        }
+      });
+    }
+  });
 };
 
-exports.addUrlToList = function(){
+exports.isUrlArchived = function(url,callback){
+  //create path name from url
+  //check to see if path name exists in sites
+    //use fs.exists to check to see if file is in folder
+
+  var present=false;
+  var fileName=path.join(process.cwd(), '../archives/sites', url);
+  console.log("fileName is ",fileName);
+  fs.exists(fileName, function(exists) {
+    if (exists) {
+      present=true;
+    }
+    callback(present);
+  });
+
 };
 
-exports.isURLArchived = function(){
+exports.downloadUrl = function(url){
+  var fileName=path.join(process.cwd(), '../archives/sites', url);
+  request('http://'+url).pipe(fs.createWriteStream(fileName));
 };
 
-exports.downloadUrls = function(){
-};
